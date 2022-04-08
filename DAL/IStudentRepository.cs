@@ -15,5 +15,6 @@ namespace EducationCenter_cw2.DAL
         Student GetById(int id);
 
         void update(Student emp);
+        void Delete(int id);
     }
 }

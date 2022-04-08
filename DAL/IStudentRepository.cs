@@ -12,6 +12,8 @@ namespace EducationCenter_cw2.DAL
         IList<Student> GetAll();
 
         void Insert(Student emp);
+        Student GetById(int id);
 
+        void update(Student emp);
     }
 }

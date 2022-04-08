@@ -43,6 +43,38 @@ namespace EducationCenter_cw2.DAL
             return students;
         }
 
+        public Student GetById(int id)
+        {
+            using(var conn = new SqlConnection(ConnStr))
+            {
+                using(var cmd = conn.Create.Command())
+                {
+                    cmd.CommantText = @"SELECT [StudentId]
+                                              ,[Name]
+                                              ,[PhoneNumber]
+                                        FROM [dbo].[Student]
+                                        WHERE StudentId = @StudentId
+                                        ";
+                    cmd.Parameters.AddWithValue("@StudentId", id);
+
+                    conn.Open();
+                    using(var rdr = cmd.ExecuteReader())
+                    {
+                        if(rdr.Read())
+                        {
+                            student = new Student()
+                            {
+                                StudentId = id,
+                                Name = rdr.GetString(rdr.GetOrdinal("Name")),
+                                PhoneNumber = rdr.GetString(rdr.GetOrdinal("Phone Number")),
+                            }
+                        }
+                    }
+
+                }
+            }
+            return student;
+        }
 
         public void Insert(Student emp)
         {
@@ -73,6 +105,29 @@ namespace EducationCenter_cw2.DAL
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Update(Student emp)
+        {
+            using(var conn = new SqlConnection(ConnStr))
+            {
+                using (var cmd = conn.Create.Command())
+                {
+                    cmd.CommandText = @"UPDATE [dbo].[Student]
+                                                SET [Name] = @Name
+                                                ,[PhoneNumber] = @PhoneNumber
+                                                 WHERE StudentId = [StudentId] = @StudentId";
+
+                    cmd.Parameters.Add(pStudentID);
+
+                    cmd.Parameters.AddWithValue("@Name", emp.name);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", emp.phoneNumber);
+                    cmd.Parameters.AddWithValue("@StudentId", emp.StudentId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuiery();
                 }
             }
         }

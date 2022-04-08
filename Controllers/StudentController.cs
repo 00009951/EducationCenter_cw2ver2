@@ -50,21 +50,26 @@ namespace EducationCenter_cw2.Controllers
         // GET: Student/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var repository = new StudentRepository();
+            var emp = repository.GetById(id);
+
+            return View(emp);
         }
 
         // POST: Student/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Student emp)
         {
+            var repository = new StudentRepository();
             try
             {
-                // TODO: Add update logic here
+                repository.Update(emp);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exeption ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 return View();
             }
         }

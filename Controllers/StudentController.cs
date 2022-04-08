@@ -14,10 +14,6 @@ namespace EducationCenter_cw2.Controllers
         {
             var repository = new StudentRepository();
             var students = repository.GetAll();
-            foreach (var VARIABLE emp in students)
-            {
-                repository.GetById(emp.)
-            }
             return View(students);
         }
 
@@ -91,12 +87,14 @@ namespace EducationCenter_cw2.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var repo = new StudentRepository();
+                repo.Delete(id);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 return View();
             }
         }

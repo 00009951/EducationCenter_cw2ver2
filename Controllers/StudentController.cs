@@ -14,6 +14,10 @@ namespace EducationCenter_cw2.Controllers
         {
             var repository = new StudentRepository();
             var students = repository.GetAll();
+            foreach (var VARIABLE emp in students)
+            {
+                repository.GetById(emp.)
+            }
             return View(students);
         }
 
@@ -52,7 +56,8 @@ namespace EducationCenter_cw2.Controllers
         {
             var repository = new StudentRepository();
             var emp = repository.GetById(id);
-
+            var supervisors = repository.GetAll();
+            ViewBag.SupervisorsList = supervisors;
             return View(emp);
         }
 

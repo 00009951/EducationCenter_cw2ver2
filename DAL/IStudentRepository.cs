@@ -10,6 +10,8 @@ namespace EducationCenter_cw2.DAL
     public interface IStudentRepository
     {
         IList<Student> GetAll();
+
         void Insert(Student emp);
+
     }
 }

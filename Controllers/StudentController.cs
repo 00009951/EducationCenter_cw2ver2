@@ -36,7 +36,7 @@ namespace EducationCenter_cw2.Controllers
             var repository = new StudentRepository();
             try
             {
-                // TODO: Add insert logic here
+                repository.Insert(emp);
 
                 return RedirectToAction("Index");
             }

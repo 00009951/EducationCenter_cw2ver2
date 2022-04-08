@@ -16,6 +16,54 @@ namespace EducationCenter_cw2.Controllers
             var students = repository.GetAll();
             return View(students);
         }
+        // Import: Csv
+        public ActionResult ImportCsv()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ImportCsv(HttpPostedFileBase csvFile)
+        {
+            var studentsList = new List<Student>();
+            if (csvFile?.ContentLength > 0)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    csvFile.InputStream.CopyTo(stream);
+                    byte[] dataBytes = stream.ToArray();
+
+                    using (var bytesStream = new MemoryStream(dataBytes))
+                    using (var reader = new StreamReader("path\\to\\file.csv"))
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var students = csv.GetRecords<Student>();
+                        if (students != null)
+                        {
+                            var repo = new StudentRepository();
+                            foreach (var std in students)
+                            {
+                                try
+                                {
+                                    repo.Insert(std);
+                                    studentsList.Add(std);
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("", $"Import of student {std} failed! Error: {ex.Message}");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Empty File");
+
+            }
+            return View(studentsList);
+        }
 
         // GET: Student/Details/5
         public ActionResult Details(int id)

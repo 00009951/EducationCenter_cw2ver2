@@ -24,7 +24,7 @@ namespace EducationCenter_cw2.Controllers
         }
 
         // GET: Student/Create
-        public ActionResult Create()
+        public ActionResult Create(student emp)
         {
             return View();
         }
@@ -33,14 +33,16 @@ namespace EducationCenter_cw2.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
+            var repository = new StudentRepository();
             try
             {
                 // TODO: Add insert logic here
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 return View();
             }
         }
